@@ -30,7 +30,6 @@ public class App {
         System.out.println("9 Ver equipo completo");
         System.out.println("10 Jugar partido");
         System.out.println("11 Ver clasificación");
-
         System.out.println("0 Salir");
 
         String opcion= Utilidades.leerString("Opcion: ");
@@ -61,7 +60,6 @@ public class App {
                 liga.modificarNombre();
                 break;
             case "9":
-                System.out.println("Ver equipo completo");
                 liga.verEquipo();
                 break;
             case "10":
