@@ -8,12 +8,14 @@ public class Equipo {
     private Integer id;
     private String nombre;
     private String ciudad;
+    private Integer puntos;
 
 
     public Equipo(Integer id, String nombre, String ciudad){
         this.id=id;
         this.nombre=nombre;
         this.ciudad= ciudad;
+        puntos=0;
     }
 
 
@@ -25,6 +27,17 @@ public class Equipo {
     }
     public String getCiudad(){
         return ciudad;
+    }
+    public Integer getPuntos(){
+        return puntos;
+    }
+
+    public void setPuntos(Integer numeroPuntos){
+        puntos= numeroPuntos;
+    }
+
+    public void sumarPuntos(Integer sumarPuntos){
+        puntos += sumarPuntos;
     }
 
     public Entrenador altaEntrenador(){

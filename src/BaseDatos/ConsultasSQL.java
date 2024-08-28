@@ -12,7 +12,7 @@ import Modelos.Jugador;
 public class ConsultasSQL {
 
     public ArrayList<Equipo> consultarEquipos(Connection conexion){
-        String sql= "SELECT id,nombre,ciudad FROM equipo";
+        String sql= "SELECT id,nombre,ciudad, puntos FROM equipo";
         ArrayList<Equipo> equipos= new ArrayList<>();
         try {PreparedStatement statement = conexion.prepareStatement(sql);
             ResultSet resultado= statement.executeQuery();
@@ -21,8 +21,10 @@ public class ConsultasSQL {
                     int id= resultado.getInt("Id");
                     String nombre= resultado.getString("nombre");
                     String ciudad= resultado.getString("Ciudad");
+                    int puntos= resultado.getInt("puntos");
 
                     Equipo equipo= new Equipo(id, nombre, ciudad);
+                    equipo.setPuntos(puntos);
                     equipos.add(equipo);     
                 }
             
@@ -34,11 +36,12 @@ public class ConsultasSQL {
     }
 
     public void insertarEquipos(Connection conexion, Equipo equipo){
-        String sql= "INSERT INTO equipo(id, nombre, ciudad) VALUES (?,?,?)";
+        String sql= "INSERT INTO equipo(id, nombre, ciudad, puntos) VALUES (?,?,?,?)";
         try {PreparedStatement statement = conexion.prepareStatement(sql);
             statement.setInt(1, equipo.getId());
             statement.setString(2, equipo.getNombre());
             statement.setString(3, equipo.getCiudad());
+            statement.setInt(4, equipo.getPuntos());
 
         int filasInsertadas = statement.executeUpdate();
         if (filasInsertadas > 0) {
@@ -226,6 +229,72 @@ public class ConsultasSQL {
             }
             return plantilla;
         }
+
+        public Entrenador consultarEntrenador(Connection conexion, Integer idEquipo){
+            Entrenador entrenador= null;
+            String sql= "SELECT id,nombre,apellido, anioLicencia, idEquipo FROM entrenador WHERE idEquipo= ?";
+            try {PreparedStatement statement = conexion.prepareStatement(sql);
+                statement.setInt(1, idEquipo);
+                ResultSet resultado= statement.executeQuery();
+    
+                    while (resultado.next()) {
+                        String nombre= resultado.getString("nombre");
+                        String apellido= resultado.getString("Apellido");
+                        int anioLicencia= resultado.getInt("anioLicencia");
+    
+                        entrenador= new Entrenador(nombre,apellido,anioLicencia,idEquipo);    
+                    }
+                
+            } catch (Exception e) {
+                System.out.println("Se ha producido un error al consultar los entrenadores en la base de datos");
+            }
+            return entrenador;
+    
+        }
+
+        public Equipo consultarEquipo(Connection conexion, Integer idEquipo){
+            Equipo equipo= null;
+            String sql= "SELECT id,nombre,ciudad,puntos FROM equipo WHERE id= ?";
+            try {PreparedStatement statement = conexion.prepareStatement(sql);
+                statement.setInt(1, idEquipo);
+                ResultSet resultado= statement.executeQuery();
+    
+                    while (resultado.next()) {
+                        int id= resultado.getInt("id");
+                        String nombre= resultado.getString("nombre");
+                        String ciudad= resultado.getString("ciudad");
+                        int puntos= resultado.getInt("puntos");
+    
+                        equipo= new Equipo(id,nombre,ciudad);
+                        equipo.setPuntos(puntos);    
+                    }
+                
+            } catch (Exception e) {
+                System.out.println("Se ha producido un error al consultar el equipo en la base de datos");
+            }
+            return equipo;
+    
+        }
+
+        public void sumarPuntos(Connection conexion, Integer idEquipo, Integer puntos){
+            String sql= "UPDATE equipo SET puntos = ? WHERE id = ?;";
+            try {PreparedStatement statement = conexion.prepareStatement(sql);
+                statement.setInt(1, puntos);
+                statement.setInt(2, idEquipo);
+    
+                int filasInsertadas = statement.executeUpdate();
+                if (filasInsertadas > 0) {
+                    System.out.println("Puntos modificados correctamente");
+                }
+                
+            } catch (Exception e) {
+                System.out.println("Se ha producido un error al modificar los puntos en la base de datos");
+            }
+    
+        }
+
+
+
 
 
 }

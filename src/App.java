@@ -27,6 +27,10 @@ public class App {
         System.out.println("6 Ver entrenador por año de licencia equipo");
         System.out.println("7 Ver jugadores mas altos de cada equipo");
         System.out.println("8 Modificar nombre del equipo");
+        System.out.println("9 Ver equipo completo");
+        System.out.println("10 Jugar partido");
+        System.out.println("11 Ver clasificación");
+
         System.out.println("0 Salir");
 
         String opcion= Utilidades.leerString("Opcion: ");
@@ -55,6 +59,16 @@ public class App {
                 break;
             case "8":
                 liga.modificarNombre();
+                break;
+            case "9":
+                System.out.println("Ver equipo completo");
+                liga.verEquipo();
+                break;
+            case "10":
+                liga.jugarPartido();
+                break;
+            case "11":
+                liga.verClasificacion();
                 break;
             case "0":
                 System.out.println("Saliendo...");
